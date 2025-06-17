@@ -24,7 +24,7 @@ class YamlLoader(BaseLoader):
     def get(self, key):
         return self.data[key]
 
-CONFIG_PATH = pathlib.Path(__file__).parent.parent.resolve()
+CONFIG_PATH = pathlib.Path(__file__).parent.parent.parent.resolve()
 _CONFIG_YAML = f'{CONFIG_PATH}/llm.yaml'
 logger.debug(f'load yaml config from path={_CONFIG_YAML}!')
 

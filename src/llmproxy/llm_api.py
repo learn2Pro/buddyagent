@@ -1,0 +1,54 @@
+from abc import abstractmethod
+from openai import OpenAI
+from src.conf.config_loader import config_data
+from langchain_openai import ChatOpenAI
+
+
+class LLM:
+    def __init__(self, model_name):
+        self.model_name = model_name
+        model_name = "claude-sonnet-4-20250514"
+        llm_config = config_data["llm"][model_name]
+        self.api_base = llm_config["api_base"]
+        self.api_key = llm_config["api_key"]
+
+    @abstractmethod
+    def chat_completion(self, messages, temperature=0.0, stream=False):
+        pass
+
+    @abstractmethod
+    def get_llm(self):
+        pass
+
+
+class OpenAIClient(LLM):
+    def __init__(self, model_name):
+        super().__init__(model_name)
+        self.client = ChatOpenAI(base_url=self.api_base, api_key=self.api_key, temperature=0.0)
+
+    def chat_completion(self, messages, temperature=0.0, stream=False):
+        return self.client.invoke(messages, temperature=temperature)
+
+    def get_llm(self):
+        return self.client
+
+
+# class ClaudeClient(LLM):
+#     def __init__(self, model_name, api_base, api_key, temperature, max_tokens):
+#         super().__init__(model_name, api_base, api_key, temperature, max_tokens)
+#         self.client = OpenAI(base_url=self.api_base, api_key=self.api_key)
+
+#     def chat_completion(self, messages):
+#         pass
+
+
+if __name__ == "__main__":
+    from conf.config_loader import config_data
+
+    llm = OpenAIClient("claude-sonnet-4-20250514")
+    completion = llm.chat_completion(
+        messages=[{"role": "user", "content": "Hello, world!"}]
+    )
+    # for chunk in completion:
+    #     print(chunk)
+    print(completion.content)

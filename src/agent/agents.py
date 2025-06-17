@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
     from src.llmproxy.llm_api import OpenAIClient
 
-    client = OpenAIClient("gpt-4o")
+    client = OpenAIClient("gpt-4o-mini")
     # Step 1: 初始化 LLM
     agent = SearchAgent(client.get_llm())
     # Step 5: 执行 agent 搜索问题

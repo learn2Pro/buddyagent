@@ -24,7 +24,7 @@ class LLM:
 class OpenAIClient(LLM):
     def __init__(self, model_name):
         super().__init__(model_name)
-        self.client = ChatOpenAI(base_url=self.api_base, api_key=self.api_key, temperature=0.0)
+        self.client = ChatOpenAI(model=model_name, base_url=self.api_base, api_key=self.api_key, temperature=0.0)
 
     def chat_completion(self, messages, temperature=0.0, stream=False):
         return self.client.invoke(messages, temperature=temperature)

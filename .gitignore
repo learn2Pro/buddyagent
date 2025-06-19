@@ -2,3 +2,6 @@ __pycache__
 *.pyc
 llm.yaml
 .pytest*
+.env
+**/*.egg-info
+.langgraph_api

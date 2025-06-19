@@ -7,7 +7,6 @@ from langchain_openai import ChatOpenAI
 class LLM:
     def __init__(self, model_name):
         self.model_name = model_name
-        model_name = "claude-sonnet-4-20250514"
         llm_config = config_data["llm"][model_name]
         self.api_base = llm_config["api_base"]
         self.api_key = llm_config["api_key"]
@@ -45,7 +44,7 @@ class OpenAIClient(LLM):
 if __name__ == "__main__":
     from conf.config_loader import config_data
 
-    llm = OpenAIClient("claude-sonnet-4-20250514")
+    llm = OpenAIClient("ep-20250619111741-nx8jc")
     completion = llm.chat_completion(
         messages=[{"role": "user", "content": "Hello, world!"}]
     )

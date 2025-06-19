@@ -5,6 +5,14 @@
 
 ## architecture
 
+## descriptions
+
+- langgraph visualize
+
+```
+uvx --refresh --from "langgraph-cli[inmem]" --with-editable . langgraph dev --allow-blocking
+```
+
 ## test
 
 | 功能          | usage                             |

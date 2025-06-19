@@ -5,6 +5,7 @@ import functools
 from langchain_core.tools import tool
 from src.conf.config_loader import config_data
 from langchain_tavily import TavilySearch
+from firecrawl import FirecrawlApp
 
 def log_io(func: Callable) -> Callable:
     """
@@ -43,7 +44,7 @@ tavily_tool = TavilySearch(max_results=3)
 @tool
 @log_io
 def tavily_search(query: str) -> str:
-    """Searches for the query."""
+    """Search web pages related to the query in internet."""
     return tavily_tool.invoke(input=query)
 
 
@@ -54,6 +55,26 @@ arxiv_tool = ArxivQueryRun(api_wrapper=ArxivAPIWrapper())
 
 @tool
 @log_io
-def arxiv_search(query: str)->str:
-    """Searches for the query in arxiv."""
+def arxiv_search(query: str) -> str:
+    """Searches papers related to the query in arxiv."""
     return arxiv_search.invoke(query)
+
+
+@tool
+def web_crawl(url: str) -> str:
+    """
+    Crawl a website and return the markdown content.
+
+    Args:
+        url: The URL of the website to crawl.
+
+    Returns:
+        The markdown content of the website.
+    """
+    firecrawl = FirecrawlApp(api_key=os.getenv("FIRECRAWL_API_KEY"))
+    response = firecrawl.scrape_url(
+        url=url,
+        formats=["markdown"],
+        only_main_content=True
+    )
+    return response.markdown

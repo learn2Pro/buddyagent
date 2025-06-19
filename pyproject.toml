@@ -1,0 +1,19 @@
+[project]
+name = "buddyagent"
+version = "0.1.0"
+description = "BuddyAgent project"
+authors = [{name = "learn2pro"}]
+requires-python = ">=3.11"
+dependencies = [
+    "arxiv>=2.2.0",
+    "firecrawl-py>=2.8.0",
+    "jinja2>=3.1.6",
+    "langchain>=0.3.25",
+    "langchain-community>=0.3.25",
+    "langchain-openai>=0.3.24",
+    "langchain-tavily>=0.2.3",
+    "langgraph>=0.4.8",
+    "langgraph-supervisor>=0.0.27",
+    "loguru>=0.7.3",
+    "socksio>=1.0.0",
+]

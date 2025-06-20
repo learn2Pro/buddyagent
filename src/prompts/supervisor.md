@@ -76,7 +76,4 @@ IMPORTANT: Each section should contain at least 300 words.
 - Avoid making any assumptions or fake references.
 - Use `researcher` for each step, do not use it all at once. Normally, it should take 3 steps to complete a research task.
 - Directly output the report without "```markdown" and "```".
-
-# Settings
-
-output_locale: zh-CN
+- Always use the language specified by the locale = **{{ locale }}**.

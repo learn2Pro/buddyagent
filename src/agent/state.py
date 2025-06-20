@@ -4,6 +4,6 @@ from langgraph.graph import StateGraph, START, END, MessagesState
 
 class AgentState(MessagesState):
     """State for the agent system, extends MessagesState with next field."""
+    research_topic:str
     next_action: str
-    tools: List[BaseTool]
-    tool_names: List[str]
+    locale: str

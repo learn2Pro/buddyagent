@@ -57,7 +57,4 @@ The output should be a structured markdown report with the following sections:
 - Ensure the report is objective, clear, detailed, and free of unnecessary jargon.
 - Avoid making any assumptions or fake references.
 - Directly output the report without "```markdown" and "```".
-
-# Settings
-
-output_locale: zh-CN, including the titles of each level of paragraph.
+- Always use the language specified by the locale = **{{ locale }}**.

@@ -5,3 +5,4 @@ llm.yaml
 .env
 **/*.egg-info
 .langgraph_api
+.venv/

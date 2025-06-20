@@ -39,7 +39,4 @@ Based on the gathered information from `web_search` tool, provide the research p
 - Focus on using web_search and web_crawl tools effectively to gather credible and diverse information.
 - Adapt the research plan to the specific tools and capabilities available.
 - Directly output the plan without "```markdown" and "```".
-
-# Settings
-
-output_locale: zh-CN, including the titles of each level of paragraph.
+- Always use the language specified by the locale = **{{ locale }}**.

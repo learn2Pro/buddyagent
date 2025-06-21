@@ -1,8 +1,6 @@
 {
     "dockerfile_lines": [],
     "graphs": {
-      "researcher": "./src/agent/examples.py:researcher",
-      "planner": "./src/agent/examples.py:planner",
       "supervisor": "./src/agent/examples.py:supervisor"
     },
     "python_version": "3.11",

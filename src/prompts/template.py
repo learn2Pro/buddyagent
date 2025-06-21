@@ -85,7 +85,7 @@ def apply_prompt_template(prompt_name: str, state: AgentState) -> list:
 
     try:
         system_prompt = render_prompt_template(prompt_name, state)
-        return [{"role": "system", "content": system_prompt}] + state["messages"]
+        return [{"role": "system", "content": system_prompt}] + (state['messages'] if 'messages' in state else [])
     except Exception as e:
         raise ValueError(f"Error applying template {prompt_name}: {e}")
 

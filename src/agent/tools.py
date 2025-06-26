@@ -45,7 +45,7 @@ tavily_tool = TavilySearch(max_results=config_data["tavily"]["max_results"])
 
 @tool
 @log_io
-def tavily_search(query: str) -> str:
+def web_search(query: str) -> str:
     """Search web pages related to the query in internet."""
     return tavily_tool.invoke(input=query)
 

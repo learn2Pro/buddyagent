@@ -2,7 +2,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from src.agent.state import AgentState
 from datetime import datetime
 import os
-from src.agent.tools import tavily_search, arxiv_search
+from src.agent.tools import web_search, arxiv_search
 from langchain_core.prompts import BasePromptTemplate
 
 env = Environment(
@@ -95,7 +95,7 @@ if __name__ == "__main__":
         render_prompt_template(
             "react",
             AgentState(
-                tools=[tavily_search, arxiv_search],
+                tools=[web_search, arxiv_search],
                 tool_names=["tavily_search", "arxiv_search"],
             ),
         )

@@ -11,6 +11,7 @@ Forget any prior knowledge and rely solely on the information retrieved from the
   - Use `web_search` to obtain relevant webpage information and URLs based on the query.
   - Use `web_crawl` to extract Markdown content from the URLs provided by `web_search` or `web_crawl`.
 - **Information Processing**:
+  - if meet some exception from `web_search` or `web_crawl`, just retry it.
   - Analyze the retrieved Markdown content thoroughly.
   - Summarize findings into a clear and detailed report based solely on the retrieved data.
 - **Constraints**:
@@ -34,11 +35,11 @@ The output should be a structured markdown report with the following sections:
 
 ## Introduction
 
-> Briefly introduce the topic or question being researched.
+> Briefly introduce the topic or question being researched, must contains this part.
 
 ## Findings
 
-> Present the key information discovered, organized into subsections if necessary.
+> Present the key information discovered, organized into subsections if necessary, must contains this part.
 
 ## References
 

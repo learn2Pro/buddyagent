@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from langchain_openai import ChatOpenAI
-from src.agent.tools import tavily_search, arxiv_search, web_crawl, handoff_to_planner
+from src.agent.tools import web_search, arxiv_search, web_crawl, handoff_to_planner
 from src.agent.state import AgentState
 from src.prompts.template import (
     render_prompt_template,
@@ -66,7 +66,9 @@ def planner_node(
     """the planner node receive user request and generate full plan"""
 
     logger.info("Planner Thinking...")
+    plan_iteration = state.get("plan_iteration", 0)
     messages = apply_prompt_template("planner", state)
+    logger.warning(f"plan_iteration={plan_iteration} messages={messages}")
     response = llm.invoke(messages)
     full_plan = response.content
 
@@ -75,13 +77,29 @@ def planner_node(
         plan = Plan.model_validate_json(full_plan)
         # full_plan = format_plan(plan)
     except:
-        logger.error(
+        logger.warning(
             f"Planner response is not a valid JSON string. response={full_plan}"
         )
         return Command(
-            update={"messages": [AIMessage(content=response.content)]},
-            goto="__end__",
-        )
+                update={
+                    "messages": [AIMessage(content=full_plan)],
+                },
+                goto="reporter",
+            )
+        if plan_iteration > 0:
+            return Command(
+                update={
+                    "messages": [AIMessage(content=full_plan)],
+                },
+                goto="reporter",
+            )
+        else:
+            return Command(
+                update={
+                    "messages": [AIMessage(content=full_plan)],
+                },
+                goto="__end__",
+            )
 
     if plan.has_enough_context:
         return Command(
@@ -94,8 +112,8 @@ def planner_node(
 
     return Command(
         update={
-            "messages": [AIMessage(content=full_plan)],
             "curr_plan": plan,
+            "messages": [AIMessage(content=full_plan)],
         },
         goto="human_feedback",
     )
@@ -122,7 +140,7 @@ def human_feedback_node(
 
 def research_team_node(
     state: AgentState, config: RunnableConfig
-) -> Command[Literal["planner", "researcher", "__end__"]]:
+) -> Command[Literal["planner", "researcher"]]:
     """the research team node receive user request and generate full plan"""
 
     def continue_to_running_research_team():
@@ -158,9 +176,10 @@ def researcher_node(
     state: AgentState, config: RunnableConfig
 ) -> Command[Literal["research_team"]]:
     """the researcher node receive user request and generate full plan"""
+    logger.info("Researcher Thinking...")
     researcher = create_react_agent(
         llm,
-        tools=[tavily_search, web_crawl],
+        tools=[web_search, web_crawl],
         prompt=render_prompt_template("researcher", state),
         name="researcher",
     )
@@ -190,10 +209,30 @@ def researcher_node(
     content = response["messages"][-1].content
     curr_step.execution_res = content
 
-    return Command(update={
-        "messages": [AIMessage(content=content)],
-        "observations": observations + [content],
-    }, goto="research_team")
+    return Command(
+        update={
+            "messages": [AIMessage(content=content)],
+            "observations": observations + [content],
+        },
+        goto="research_team",
+    )
+
+
+def reporter_node(
+    state: AgentState, config: RunnableConfig
+) -> Command[Literal["planner", "__end__"]]:
+    """the reporter node reply to user and handoff to planner or reporter"""
+    curr_plan = state.get("curr_plan", None)
+    logger.info(f"Reporter Thinking current_plan={curr_plan}...")
+    messages = apply_prompt_template("reporter", state)
+    response = llm.invoke(messages)
+    content = response.content
+    return Command(
+        update={
+            "messages": [AIMessage(content=content)],
+        },
+        goto="__end__",
+    )
 
 
 # class BaseAgent:

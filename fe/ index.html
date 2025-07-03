@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>LangGraph Chatbox</title>
+  <style>
+    body { font-family: sans-serif; margin: 0 auto; max-width: 680px;}
+    #chat { height: 70vh; overflow-y: auto; border: 1px solid #ddd; padding: 1em; }
+    .msg { margin: .5em 0; }
+    .user { color: #0066cc; }
+    .bot  { color: #222; }
+  </style>
+</head>
+<body>
+  <h2>🔗 LangGraph Multi‑Agent Chatbox</h2>
+  <div id="chat"></div>
+
+  <form id="form">
+    <input id="input" autocomplete="off" placeholder="说点什么…" style="width:80%" />
+    <button>发送</button>
+  </form>
+
+  <script src="chat.js"></script>
+</body>
+</html>

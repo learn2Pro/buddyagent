@@ -80,12 +80,6 @@ def planner_node(
         logger.warning(
             f"Planner response is not a valid JSON string. response={full_plan}"
         )
-        return Command(
-                update={
-                    "messages": [AIMessage(content=full_plan)],
-                },
-                goto="reporter",
-            )
         if plan_iteration > 0:
             return Command(
                 update={

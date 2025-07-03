@@ -5,7 +5,15 @@ from src.agent.tools import web_search, web_crawl
 from src.agent.agents import AgentState
 from langgraph.graph import START, END, StateGraph, MessagesState
 from loguru import logger
-from src.agent.agents import coordinator_node, planner_node, human_feedback_node, research_team_node, researcher_node, reporter_node
+from src.agent.agents import (
+    coordinator_node,
+    planner_node,
+    human_feedback_node,
+    research_team_node,
+    researcher_node,
+    reporter_node,
+)
+from langgraph.checkpoint.memory import MemorySaver
 
 
 supervisor = (
@@ -19,3 +27,6 @@ supervisor = (
     .add_node("reporter", reporter_node)
     .compile()
 )
+
+if __name__ == "__main__":
+    supervisor.invoke({"messages": [{"role": "user", "content": "Hello, World!"}]})

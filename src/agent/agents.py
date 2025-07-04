@@ -118,8 +118,8 @@ def human_feedback_node(
 ) -> Command[Literal["planner", "research_team", "reporter"]]:
     """the human feedback node reply to user and handoff to planner or reporter"""
     logger.info("Receiving Human Feedback...")
-    feedback = interrupt("Please Review the plan...")
-    logger.warning(f"human feedback={feedback}")
+    # feedback = interrupt("Please Review the plan...")
+    # logger.warning(f"human feedback={feedback}")
     plan_iteration = state.get("plan_iteration", 0) + 1
     goto = "research_team"
     if state["curr_plan"] and state["curr_plan"].has_enough_context:

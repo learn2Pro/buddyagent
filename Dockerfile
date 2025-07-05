@@ -8,6 +8,7 @@ ADD . /app
 WORKDIR /app
 
 # Presuming there is a `my_app` command provided by the project
+RUN uv lock
 RUN uv sync --locked
 
 EXPOSE 80 8080 8000

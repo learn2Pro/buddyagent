@@ -7,7 +7,7 @@ new_version="0."$incr_number".0"
 
 echo 'start build buddyweb with new version=>'$new_version
 
-sudo docker build -t buddyweb:$new_version .
+sudo docker build -t buddyweb:$new_version -f Dockerfile_fe .
 
 echo 'build done'
 

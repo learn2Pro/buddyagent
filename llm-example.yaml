@@ -1,0 +1,12 @@
+llm:
+  activate: xx-model
+  gpt-4o:
+    api_base: https://api.openai.com/v1
+    api_key: sk-xxxx#api_key
+
+tavily:
+  key: tavily-api-key
+  max_results: 3
+
+firecrawl:
+  key: firecrawl-api-key

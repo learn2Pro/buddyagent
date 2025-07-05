@@ -17,8 +17,10 @@ from src.llmproxy.llm_api import OpenAIClient
 from langgraph.types import Command, interrupt
 from typing import Literal
 from src.agent.state import Plan, StepType
+from src.conf.config_loader import config_data
 
-client = OpenAIClient("ep-20250619111741-nx8jc")
+activate_llm = config_data["llm"]["activate"]
+client = OpenAIClient(activate_llm)
 llm = client.get_llm()
 
 

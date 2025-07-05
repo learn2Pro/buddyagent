@@ -1,0 +1,33 @@
+#!/bin/bash
+sudo docker network inspect mjapi >/dev/null 2>&1 || sudo docker network create mjapi
+
+image_version=$(sudo docker image ls|grep buddyweb|tail -n +1|head -n 1|awk -F ' ' '{print $2}'|cut -f2 -d '.')
+incr_number=$(($image_version+1))
+new_version="0."$incr_number".0"
+
+echo 'start build buddyweb with new version=>'$new_version
+
+sudo docker build -t buddyweb:$new_version .
+
+echo 'build done'
+
+ps_id=$(sudo docker ps|grep buddyweb|tail -n +1|cut -f1 -d ' ')
+
+echo 'stop=>'$ps_id'and restart with new version=>'$new_version
+
+if [ -z "$ps_id" ]; then
+    echo "No running container found. Skipping stop operation."
+else
+    sudo docker stop $ps_id
+fi
+
+sudo docker rm buddyweb -f
+
+sudo docker run -d --net mjapi --name buddyweb -p  8001:8001 buddyweb:$new_version
+
+echo 'buddyweb restart done'
+
+echo '------------------------>logs of new container------------------------>'
+new_ps_id=$(sudo docker ps|grep buddyweb|tail -n +1|cut -f1 -d ' ')
+
+sudo docker logs $new_ps_id -f

@@ -1,0 +1,16 @@
+FROM python:3.12-slim-bookworm
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+# Copy the project into the image
+ADD . /app
+
+# Sync the project into a new environment, asserting the lockfile is up to date
+WORKDIR /app
+
+# Presuming there is a `my_app` command provided by the project
+RUN uv sync --locked
+
+EXPOSE 80 8080 8001
+
+# Presuming there is a `my_app` command provided by the project
+CMD ["uv", "run", "python", "-m", "http.server", "-d", "fe/", "8001"]

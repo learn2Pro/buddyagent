@@ -13,14 +13,14 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.messages import AIMessage, HumanMessage
 from loguru import logger
-from src.llmproxy.llm_api import OpenAIClient
+from src.llmproxy.llm_api import UnifiedLLMClient
 from langgraph.types import Command, interrupt
 from typing import Literal
 from src.agent.state import Plan, StepType
 from src.conf.config_loader import config_data
 
 activate_llm = config_data["llm"]["activate"]
-client = OpenAIClient(activate_llm)
+client = UnifiedLLMClient(activate_llm)
 llm = client.get_llm()
 
 
@@ -31,8 +31,8 @@ def coordinator_node(
     logger.info("Coordinator talking.")
     messages = apply_prompt_template("coordinator", state)
     response = llm.bind_tools([handoff_to_planner]).invoke(messages)
-    logger.info(f"Coordinator messages={messages} response={response}")
-    locale = state.get("locale", "en-US")
+    # logger.info(f"Coordinator messages={messages} response={response}")
+    locale = state.get("locale", "zh-CN")
     research_topic = state.get("research_topic", "")
     content = response.content
     if len(response.tool_calls) > 0:
@@ -47,11 +47,13 @@ def coordinator_node(
                 research_topic = tool_call.get("args", {}).get("research_topic")
                 content = f"Transfer to planner to analyze the research topic: {research_topic}!!!"
                 break
+    elif 'handoff_to_planner' in response.content:
+        goto = "planner"
+        research_topic = state.get("messages", [])[-1].content
+        content = f"Transfer to planner to analyze the research topic: {research_topic}!!!"
     else:
         goto = "__end__"
-        logger.warning(
-            f"Coordinator response contains no tool calls={response.content}. Terminating workflow execution."
-        )
+        logger.warning(f"Coordinator response contains no tool calls={response.content}. \n>>>>Terminating workflow execution.")
     return Command(
         update={
             "locale": locale,

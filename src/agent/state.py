@@ -38,7 +38,7 @@ class AgentState(MessagesState):
 
     research_topic: str
     next_action: str
-    locale: str
+    locale: str = Field(default="zh-CN", description="The locale of the agent")
     max_step_num: int = 3
     plan_iteration: int = 0
     curr_plan: Optional[Plan] = Field(

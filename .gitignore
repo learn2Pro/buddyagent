@@ -6,3 +6,4 @@ llm.yaml
 **/*.egg-info
 .langgraph_api
 .venv/
+uv.lock

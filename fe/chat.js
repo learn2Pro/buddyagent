@@ -43,7 +43,8 @@ form.onsubmit = async (e) => {
 
   appendStreamStart("bot");
 
-  evtSource = new EventSource(`http://mjapi:8000/chat/stream?message=${encodeURIComponent(text)}`);
+  // evtSource = new EventSource(`http://localhost:8000/chat/stream?message=${encodeURIComponent(text)}`);
+  evtSource = new EventSource(`/chat/stream?message=${encodeURIComponent(text)}`);
 
   let botMsg = "";
   evtSource.onmessage = (e) => {
